@@ -43,12 +43,12 @@ Test Connectivity from Tanzu Kubernetes Cluster to Supervisor Cluster Service
         vi create-local-proxy-service.yaml
             replace ${Service_cluster_Node_IP} in Endpoints with the External-Ip from Load Balancer Service 
         kubectl apply -f create-local-proxy-service.yaml
-        kubectl describe svc echo -n frontend-service
+        kubectl describe svc echo -n frontend-service   (Note Endpoint is LB of Infrastructure Service in Supervisor Cluster
         
  Deploy Test Pod and connect to Supervisor Infrastructure Service
 
     kubectl apply -f create-pod-for-test-shell.yaml -n frontend-service
-    kubectl exec -it shell
+    kubectl exec -it shell -n frontend-service -- /bin/bash
     curl http://echo.frontend-service.svc.cluster.local
     
     
