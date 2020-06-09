@@ -1,24 +1,15 @@
 apiVersion: v1
-kind: Service
+kind: Pod
 metadata:
-  name: echo
+  name: shell
   namespace: tkg-system
 spec:
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
----
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: echo
-  namespace: tkg-system
-subsets:
-- addresses:
-  - ip: ${SERVICE_CLUSTER_NODE_IP}
-  ports:
-  - name: http
-    port: ${SHARED_ECHO_SERVICE_NODE_PORT}
-    protocol: TCP
+  containers:
+  - name: shell
+    image: photon
+    command:
+    - /bin/bash
+    args:
+    - -c
+    - sleep 18000
 
