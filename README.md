@@ -31,7 +31,7 @@ Test Connectivity between namespaces
     curl http://echo.frontend-service.svc.cluster.local
     curl http://echo.infrastructure-service.svc.cluster.local will also work because we are in the same cluster.
     
-Test Connectivity from Tanzu Kubernetes Cluster
+Test Connectivity from Tanzu Kubernetes Cluster to Supervisor Cluster Service
 
     Create frontend-service namespace on tkg cluster
     
@@ -43,11 +43,17 @@ Test Connectivity from Tanzu Kubernetes Cluster
     
         kubectl apply -f create-local-proxy-service.yaml
         
- Test Connectivity To Supervisor Cluster
+ Deploy Test Pod and connect to Supervisor Infrastructure Service
 
     kubectl apply -f create-pod-for-test-shell.yaml
     kubectl exec -it shell
     curl http://echo.frontend-service.svc.cluster.local
+    
+    
+    
+Microservice Application Deployment across Tanzu Kubernetes Cluster and Supervisor Cluster
+
+Data Services will run in vSphere pods directly on ESXi hosts and all frontend services will run in Tanzu Kubernetes Cluster
         
         
     
