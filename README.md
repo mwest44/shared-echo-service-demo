@@ -12,40 +12,41 @@ Deploy Infrastructure Service
     kubectl vsphere login --server "servername" --vsphere-username administrator@vsphere.local --insecure-skip-tls-verify
     kubectl config use-context infrastructure-service
     kubectl apply -f create-infrastructure-service.yaml
+    kubectl describe svc echo     (Note the Endpoint for local pod)
+    
+Deploy Test pod
+
+    kubectl apply -f create-pod-for-test-shell.yaml
+    
+Curl the Supervisor Infrastructure Service from the Shell Pod
+
+    kubectl exec -it shell -- /bin/bin
+    curl http://echo.infrastructure-service.svc.cluster.local
   
 Find Load Balancer IP
 
-    kubectl get svc
+    kubectl get svc     Note this for later
   
-Deploy frontend-service that will proxy to Infrastructure Service in other namespace.
-
-    kubectl config use-context frontend-service
-    vi create-local-proxy-service.yaml
-      replace ${Service_cluster_Node_IP} in Endpoints with the External-Ip from Load Balancer Service 
-    kubectl apply -f create-local-proxy-service.yaml
-  
-Test Connectivity between namespaces
-
-    kubectl apply -f create-pod-for-test-shell.yaml
-    kubectl exec -it shell
-    curl http://echo.frontend-service.svc.cluster.local
-    curl http://echo.infrastructure-service.svc.cluster.local will also work because we are in the same cluster.
     
 Test Connectivity from Tanzu Kubernetes Cluster to Supervisor Cluster Service
 
+    kubectl vsphere login --server k8s.corp.local -u administrator@corp.local --tanzu-kubernetes-cluster-name echo-service-cluster --tanzu-kubernetes-cluster-namespace tkg --insecure-skip-tls-verify
+    
+    kubectl config use-context echo-service-cluster
+    
     Create frontend-service namespace on tkg cluster
     
-    
-        kubectl config use-context tkg
         kubectl create namespace frontend-service
     
     Create frontend-service that will proxy to Infrastructure service in Supervisor Cluster
-    
+        
+        vi create-local-proxy-service.yaml
+            replace ${Service_cluster_Node_IP} in Endpoints with the External-Ip from Load Balancer Service 
         kubectl apply -f create-local-proxy-service.yaml
         
  Deploy Test Pod and connect to Supervisor Infrastructure Service
 
-    kubectl apply -f create-pod-for-test-shell.yaml
+    kubectl apply -f create-pod-for-test-shell.yaml -n frontend-service
     kubectl exec -it shell
     curl http://echo.frontend-service.svc.cluster.local
     
