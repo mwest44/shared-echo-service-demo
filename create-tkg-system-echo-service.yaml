@@ -19,6 +19,6 @@ subsets:
   - ip: ${SERVICE_CLUSTER_NODE_IP}
   ports:
   - name: http
-    port: ${SHARED_ECHO_SERVICE_NODE_PORT}
+    port: 80
     protocol: TCP
 
