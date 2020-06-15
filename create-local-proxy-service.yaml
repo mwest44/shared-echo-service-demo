@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo
+  namespace: frontend-service
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: echo
+  namespace: frontend-service
+subsets:
+- addresses:
+  - ip: 10.40.14.72
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+

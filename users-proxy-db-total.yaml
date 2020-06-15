@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-mongo
+  labels:
+    app: acmefit
+    service: users-mongo
+spec:
+  ports:
+    - port: 27017
+      name: mongo-users
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: users-mongo
+subsets:
+- addresses:
+  - ip: 10.40.14.78
+  ports:
+  - name: http
+    port: 27017
+    protocol: TCP      

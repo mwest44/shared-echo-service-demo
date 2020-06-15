@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-postgres
+  labels:
+    app: acmefit
+    service: order-db
+spec:
+  ports:
+    - port: 5432
+      name: postgres-order
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: order-postgres
+subsets:
+- addresses:
+  - ip: 10.40.14.77
+  ports:
+  - name: http
+    port: 5432
+    protocol: TCP      
