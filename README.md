@@ -1,4 +1,4 @@
-# shared-echo-service-demo 
+# Shared-echo-service-demo 
 
 git clone repo
 
@@ -59,7 +59,7 @@ Create TK cluster : tkg-workload-cluster
     
     
     
-# ACMEFit Deployment across TK Cluster and Supervisor Cluster
+# ACMEFit across TK Cluster and Supervisor Cluster Demo
 
 Data Services will run in vSphere pods directly on ESXi hosts and all frontend services will run in Tanzu Kubernetes Cluster
 
@@ -133,13 +133,39 @@ Create Frontend Services in TK Cluster
 
     kubectl apply -f ~/demo-applications/allow-runasnonroot-clusterrole.yaml
     
- Edit Selectorless service YAML files to point endpoints to the corresponding Supervisor Services
+Edit Selectorless service YAML files to point endpoints to the corresponding Supervisor Services
  
  	vi	cart-proxy-redis-total.yaml and change IP: field with external IP for cart-redis service in Supervisor
 	vi 	catalog-proxy-db-total.yaml and change IP: field with external IP for catalog-mongo service in Supervisor
 	vi	order-proxy-db-total.yaml and change IP: field with external IP for order-postgres service in Supervisor
 	vi	users-proxy-db-total.yaml and change IP: field with external IP for user-mongo service in Supervisor
 	vi	users-proxy-redis-total.yaml and change IP: field with external IP for user-redis service in Supervisor
+	
+Deploy Frontend Selectorless Proxy services on TK Cluster
+
+	kubectl apply -f cart-proxy-redis-total.yaml
+	kubectl apply -f catalog-proxy-db-total.yaml
+	kubectl apply -f order-proxy-db-total.yaml
+	kubectl apply -f users-proxy-db-total.yaml
+	kubectl apply -f users-proxy-redis-total.yaml
+	
+	Verify Service and Endpoints
+		kubectl get svc
+		kubectl get endpoints
+
+Deploy Service Pods on TK Cluster
+
+	kubectl apply -f cart-total.yaml
+	kubectl apply -f catalog-total.yaml
+	kubectl apply -f payment-total.yaml
+	kubectl apply -f order-total.yaml
+	kubectl apply -f users-total.yaml
+	kubectl apply -f frontend-total.yaml
+
+Deploy Point of Sale Service:
+	Edit point-of-sale-total.yaml
+	Change the value of FRONTEND_HOST to frontend.frontend-service.svc.cluster.local
+	kubectl apply -f point-of-sales-total.yaml
 
  
     
