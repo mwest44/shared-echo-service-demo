@@ -2,12 +2,12 @@
 
 git clone https://github.com/mwest44/shared-echo-service-demo.git
 
-Create TK cluster : tkg-workload-cluster
-
  Create Supervisor Cluster Create Namespaces
 
     tkg for tkg-workload-cluster
     infrastructure-service for backend services
+    
+ Create TK cluster : tkg-workload-cluster
 
  Deploy Infrastructure Service
 
