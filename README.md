@@ -59,7 +59,7 @@ Create TK cluster : tkg-workload-cluster
     
     
     
-# Microservice Application Deployment across Tanzu Kubernetes Cluster and Supervisor Cluster
+# ACMEFit Deployment across TK Cluster and Supervisor Cluster
 
 Data Services will run in vSphere pods directly on ESXi hosts and all frontend services will run in Tanzu Kubernetes Cluster
 
@@ -114,19 +114,35 @@ Data Services will run in vSphere pods directly on ESXi hosts and all frontend s
     
 	    kubectl apply -f users-db-total.yaml
 	    kubectl apply -f users-redis-total.yaml
+	    
+Get External IPs for Load Balancer Services
+
+	kubectl get svc     (Note the 5 External-IPs for use in creating Proxy Services on frontend TK cluster)
         
- Create Frontend Services in TK Cluster
+Create Frontend Services in TK Cluster
 
     kubectl vsphere login --server k8s.corp.local -u administrator@corp.local --tanzu-kubernetes-cluster-name tkg-workload-cluster --tanzu-kubernetes-cluster-namespace tkg --insecure-skip-tls-verify
+    
+ Create frontend-service namespace and set context on tkg cluster
 
-    kubectl config use-context tkg-workload-cluster
+    kubectl create namespace frontend-service
+    kubectl config set-context --current --namespace=frontend-service
+    kubectl config view --minify | grep ‘namespace: frontend-service’
     
  Enable RunAsRoot ClusterRole
 
     kubectl apply -f ~/demo-applications/allow-runasnonroot-clusterrole.yaml
+    
+ Edit Selectorless service YAML files to point endpoints to the corresponding Supervisor Services
+ 
+ 	vi	cart-proxy-redis-total.yaml and change IP: field with external IP for cart-redis service in Supervisor
+	vi 	catalog-proxy-db-total.yaml and change IP: field with external IP for catalog-mongo service in Supervisor
+	vi	order-proxy-db-total.yaml and change IP: field with external IP for order-postgres service in Supervisor
+	vi	users-proxy-db-total.yaml and change IP: field with external IP for user-mongo service in Supervisor
+	vi	users-proxy-redis-total.yaml and change IP: field with external IP for user-redis service in Supervisor
 
- Create frontend-service namespace on tkg cluster
-
-    kubectl create namespace frontend-service
+ 
+    
+ 
 
  
