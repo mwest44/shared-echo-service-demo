@@ -1,6 +1,6 @@
 # Shared-echo-service-demo 
 
-git clone repo
+git clone https://github.com/mwest44/shared-echo-service-demo.git
 
 Create TK cluster : tkg-workload-cluster
 
