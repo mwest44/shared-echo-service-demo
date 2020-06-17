@@ -125,9 +125,9 @@ Create Frontend Services in TK Cluster
     
  Create frontend-service namespace and set context on tkg cluster
 
-    kubectl create namespace frontend-service
-    kubectl config set-context --current --namespace=frontend-service
-    kubectl config view --minify | grep ‘namespace: frontend-service’
+    kubectl create namespace distributed-acme-fit
+    kubectl config set-context --current --namespace=distributed-acme-fit
+    kubectl config view --minify | grep ‘namespace: distributed-acme-fit’
     
  Enable RunAsRoot ClusterRole
 
@@ -161,11 +161,16 @@ Deploy Service Pods on TK Cluster
 	kubectl apply -f order-total.yaml
 	kubectl apply -f users-total.yaml
 	kubectl apply -f frontend-total.yaml
-
-Deploy Point of Sale Service:
-	Edit point-of-sale-total.yaml
-	Change the value of FRONTEND_HOST to frontend.frontend-service.svc.cluster.local
 	kubectl apply -f point-of-sales-total.yaml
+	
+	
+Go to Store UserInterface
+
+	kubectl get svc frontend and note the External-IP
+
+From Browser:   http://External-IP
+
+Login as user: eric     password:  vmware1!
 
  
     
